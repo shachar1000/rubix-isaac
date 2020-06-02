@@ -41,3 +41,5 @@ requests == 2.23.0
 
 # C:\Users\limor\Desktop\rubix-isaac\reddit.py: 4
 scipy == 1.3.2
+
+gunicorn

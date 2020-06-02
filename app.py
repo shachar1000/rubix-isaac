@@ -21,6 +21,7 @@ app.config["SECRET_KEY"] = secrets.token_urlsafe(16)
 app.wsgi_app = SassMiddleware(app.wsgi_app, {
     'app': ('static/sass', 'static/css', '/static/css')
 })
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///color'
 
