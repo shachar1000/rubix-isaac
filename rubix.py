@@ -172,24 +172,25 @@ def main(code=None):
     
     #matrix_color_placeholder = [[ 0 for x in range(4)] for y in range(3)]
 
-    # URL = "http://127.0.0.1:5000/useCode" # for now local host
-    # 
-    # print(code)
-    # #code = 'bioq'
-    # data = requests.post(url=URL, json={'code':code}).json()["stringColor"]
-    # print(data)
-    # 
-    # #data = list("wwwwwwwwwrrrrrrrrrgggggggggbbbbbbbbbyyyyyyyyyooooooooo")
-    # data = np.array(list(data)).reshape((int(len(data)/9), 3, 3))
-    # 
-    # for y in range(len(matrix_color_indicator)):
-    #     for x in range(len(matrix_color_indicator[y])):
-    #         for matrixdata in data:
-    #             if matrix_color_indicator[y][x] == matrixdata[1][1]:
-    #                 matrix1[y][x] = matrixdata
+    #URL = "http://127.0.0.1:5000/useCode" # for now local host
+    URL = "https://rubix-isaac.herokuapp.com/useCode" # now heroku
+    
+    print(code)
+    #code = 'bioq'
+    data = requests.post(url=URL, json={'code':code}).json()["stringColor"]
+    print(data)
+    
+    #data = list("wwwwwwwwwrrrrrrrrrgggggggggbbbbbbbbbyyyyyyyyyooooooooo")
+    data = np.array(list(data)).reshape((int(len(data)/9), 3, 3))
+    
+    for y in range(len(matrix_color_indicator)):
+        for x in range(len(matrix_color_indicator[y])):
+            for matrixdata in data:
+                if matrix_color_indicator[y][x] == matrixdata[1][1]:
+                    matrix1[y][x] = matrixdata
                     
             
-    startCubeSolved()
+    #startCubeSolved()
 
     mat1 = [
     ["r", "g", "b"],
@@ -1039,16 +1040,16 @@ def main(code=None):
                 sys.exit()
         pygame.display.update()
 
-# master = tk.Tk()
-# tk.Label(master, text="Enter your code  ").grid(row=0)
-# code = tk.Entry(master)
-# code.grid(row=0, column=1)
-# tk.Button(master, 
-#           text='Done', 
-#           command=master.quit).grid(row=3, 
-#                                     column=0, 
-#                                     sticky=tk.W, 
-#                                     pady=4)
-# master.mainloop()
-# main(code=code.get())
-main()
+master = tk.Tk()
+tk.Label(master, text="Enter your code  ").grid(row=0)
+code = tk.Entry(master)
+code.grid(row=0, column=1)
+tk.Button(master, 
+          text='Done', 
+          command=master.quit).grid(row=3, 
+                                    column=0, 
+                                    sticky=tk.W, 
+                                    pady=4)
+master.mainloop()
+main(code=code.get())
+#main()

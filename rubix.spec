@@ -4,9 +4,9 @@ block_cipher = None
 
 
 a = Analysis(['rubix.py'],
-             pathex=['C:\\Users\\limor\\Desktop\\flaser'],
+             pathex=['C:\\Users\\limor\\Desktop\\rubix-isaac'],
              binaries=[],
-             datas=[],
+             datas=[('./nigga.ttf', '.')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -15,8 +15,6 @@ a = Analysis(['rubix.py'],
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
-			 
-a.datas += [('nigga.ttf', '.\\nigga.ttf', 'DATA')]
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
@@ -33,4 +31,3 @@ exe = EXE(pyz,
           upx_exclude=[],
           runtime_tmpdir=None,
           console=True )
-
