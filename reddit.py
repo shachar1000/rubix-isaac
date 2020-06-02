@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import imutils
 from scipy.spatial import distance as dist
-from pynput import keyboard
+#from pynput import keyboard
 import math
 from functools import reduce
 from operator import itemgetter
