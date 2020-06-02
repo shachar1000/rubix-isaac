@@ -16,14 +16,18 @@ import random
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 #Scss(app, static_dir='static', asset_dir='assets')
-app.config["SECRET_KEY"] = secrets.token_urlsafe(16)
+app.config["SECRET_KEY"] = "45r3vg679845378g694r37g89dgyubfgbv6bfrv7bt679t6wa78eryt78wevb78ygdhjgay7826768621gdhghjsbj"
+#secrets.token_urlsafe(16)
 
 app.wsgi_app = SassMiddleware(app.wsgi_app, {
     'app': ('static/sass', 'static/css', '/static/css')
 })
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///color'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///color'
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://fjjsikrgofajma:213d3e5b1e5978a7e409f2ee8bd2a713ee6450d510488d227781c796c1aa7678@ec2-46-137-84-173.eu-west-1.compute.amazonaws.com:5432/d2cvfv16bhnmcm"
+
+# the thing is the name of the enviromental variable is DATABASE_URL but it ultimately gets put in SQLALCHEMY_DATABASE_URI
 
 db = SQLAlchemy(app)
 
