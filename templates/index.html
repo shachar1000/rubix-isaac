@@ -1,0 +1,542 @@
+
+<html>
+<head>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" type='text/css' href="{{url_for('static', filename='css/grid.scss.css')}}">
+  
+  
+  <style>
+  
+  body {
+    margin: 0;
+    padding: 0;  
+  }
+  
+  main {
+    margin-left: 6rem;
+    padding-left: 1rem;
+  }
+  
+  .navbar-text {
+    display: none;
+    margin-left: 1rem;
+    color: #b6b6b6;
+  }
+  a:hover {
+    text-decoration: none;
+  }
+  
+  .logo {
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    font-size: 1.5rem;
+    letter-spacing: 0.3ch;
+    margin-bottom: 1.5rem;
+    background-color: #141418;
+    color: #ececec;
+  }
+  
+  li {
+    width: 100%;
+  }
+  .navbar-link img {
+    min-width: 5rem;
+    margin: 0 0.5rem;
+  }
+  
+  nav {
+    position: fixed;
+    width: 6rem;
+    height: 100vh;
+    background-color: #23232e;
+    transition: width 200ms ease;
+  }
+  
+  .navbar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .navbar-link {
+    text-decoration: none;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    filter: grayscale(100%) opacity(0.6); 
+    transition: 200ms ease;
+  }
+  
+  .navbar-link:hover {
+    filter: grayscale(0%) opacity(1); 
+  }
+  
+  li:last-child {
+    margin-top: auto;
+  }
+  
+  li:first-child {
+    margin-top: 1rem;
+  }
+  
+  li:first-child img {
+    transform: rotate(0deg);
+    transition: transform 200ms ease;
+  }
+  
+  nav:hover li:first-child img {
+    transform: rotate(360deg);
+  } 
+  
+   nav:hover {
+    width: 16rem;
+  }
+  
+  nav:hover .navbar-text {
+    display: inline;
+  } 
+  
+
+  
+  
+  
+  </style>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script type="text/javascript">
+
+    
+
+  
+
+
+
+    $(document).ready(function(e){
+      
+      function fullColors() {
+        if (storeColors.length == 6) {
+          window.location = "/getExe";
+          $.ajax({
+            url: "getCode",
+            data: JSON.stringify({storeColors: storeColors}),
+            type: 'post',
+            cache: false,
+            processData: false,
+            contentType: "application/json; charset=utf-8",
+            success: function(resp) { 
+              alert(JSON.parse(resp).code)
+            }
+          });
+        }
+      }
+      
+      var storeColors = [];
+      
+      var noCounter = -1;
+      
+      var progress = new Vue({
+        el: ".progress",
+        data() {
+          let colors = ["red", "green", "yellow", "orange", "white", "blue"];
+          return {
+            colors: colors,
+            urls: [{loader: "https://img.icons8.com/nolan/64/loading-sign.png", check: "https://img.icons8.com/nolan/64/check-all.png"}],
+            sides: colors.reduce((a,b)=> (a[b]=false,a),{})
+          }
+        }
+      })
+      
+      // $("#buttons"+noCounter).css('display', 'none');
+      
+      $("nav").hover(function() {
+        $("main").css('margin-left', '16rem');
+      }, function() {
+        // on mouseout, reset the background colour
+        $('main').css('margin-left', '6rem');
+      });
+      
+      
+      var canvas = document.getElementsByTagName('canvas')[0];
+      var ctx = canvas.getContext('2d');
+      
+      
+      function displayImage(imageURL) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var DOM_img = document.createElement("img");
+        DOM_img.src = "data:image/jpeg;charset=utf-8;base64," + imageURL;
+        console.log(DOM_img.src)
+        DOM_img.id = "imgay";
+        document.body.appendChild(DOM_img);
+        document.getElementById("imgay").style.visibility = "hidden";
+        img = document.getElementById("imgay");
+        img.addEventListener('load', e => {
+          // var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+          // var x = (canvas.width / 2) - (img.width / 2) * scale;
+          // var y = (canvas.height / 2) - (img.height / 2) * scale;
+          // ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+          
+          
+          var myCanvas = $('#canvas');
+          canvas.width = myCanvas.width();
+          canvas.height = myCanvas.height();
+
+          
+          var wrh = img.width / img.height;
+  
+          var newWidth = ctx.canvas.width;
+          var newHeight = newWidth / wrh;
+          if (newHeight > ctx.canvas.height) {
+              newHeight = ctx.canvas.height;
+              newWidth = newHeight * wrh;
+          }
+
+          $("#imgay").remove();
+          ctx.drawImage(img, 0, 0, newWidth*2, newHeight);
+        });
+      }
+
+      $('#upload').on('click', function(){
+        function main() {
+          let formData = new FormData();
+          for (let i = 0; i < document.getElementById('multiFiles').files.length; i++) {
+              formData.append("files[]", document.getElementById('multiFiles').files[i])
+          }
+          $.ajax({
+            url: "upload",
+            data: formData,
+            type: 'post',
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(resp) {
+              resp = JSON.parse(resp)
+              
+              displayImage(resp.imageDetected)
+              
+              
+              htmlStrings = ["<button type='button' class='btn btn-success' id='yes'>yes</button>",
+              "<button type='button' class='btn btn-danger' id='no'>no</button>"];
+              
+              htmlStrings.forEach((item, i) => {
+                var wrapper= document.createElement('div');
+                wrapper.innerHTML= item;
+                document.getElementsByClassName("grid")[0].append(wrapper.firstChild);
+              });
+              
+              // for (var i = 0; i < $('.btn').length; i++) {
+              //   $('.yourclass').equ(i)
+              // }
+              
+              $("#no").css('grid-area', "no");
+              $("#yes").css('grid-area', "yes");
+              $(".uploadDiv").css('display', 'none');
+              
+              document.getElementsByClassName("grid")[0].style.gridTemplateAreas = '"cool cool cool cool cool" "progress imageDivWait imageDivWait yes yes" "progress imageDivWait imageDivWait no no"'
+              
+              
+              $("#yes").click(function(){
+                console.log(storeColors);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                $( "#no" ).remove();
+                $( "#yes" ).remove();
+                middle_color = resp.colors_matrix[1][1];
+                progress.sides[middle_color] = true;
+                $("#no").css('display', "none");
+                $("#yes").css('display', "none");
+                document.getElementsByClassName("grid")[0].style.gridTemplateAreas = '"cool cool cool cool cool" "progress imageDivWait imageDivWait uploadDiv uploadDiv" "progress imageDivWait imageDivWait uploadDiv uploadDiv"'
+                $(".uploadDiv").css('display', "");
+                storeColors.push(resp.colors_matrix);
+                fullColors()
+              });  
+              
+              $("#no").click(function() {
+                
+                var response;
+                var vueContext;
+                displayImage(resp.imageDetected)
+                
+                noCounter++;
+                templateLiteral = `
+                
+                  <table class="table table-striped" id="buttons">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">RGB</th>
+                        <th scope="col">Color</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item, index) in colors">
+                        <th scope="row">1</th>
+                        <td>
+                          <button class="btn btn-primary" v-on:click="send(item)" v-bind:style="{ backgroundColor: item, width: '100%', height: '100%'}"></button>
+                        </td>
+                        {% raw %}
+                        <td v-bind:style= "colorsDefaultOrValue[item] != 'DEFAULT' ? 'color:' + colorsDefaultOrValue[item] +';' : 'black'">{{colorsDefaultOrValue[item]}}</td>
+                        {% endraw %}
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button id="fixed" class="btn btn-primary" style="width: 100%; height: 26%;">Fixed it!</button>
+            
+              `
+              
+              document.getElementById("placeholder").innerHTML += templateLiteral;
+              $("#buttons").prop('id', 'buttons'+noCounter);  
+                
+                $( "#no" ).remove();
+                $( "#yes" ).remove();
+                var rgb2hex = (r, g, b) => {
+                  return '#' + [r, g, b].map(value => {
+                    hexa = value.toString(16);
+                    return hexa.length == 1 ? '0' + hexa : hexa
+                  }).join('')
+                }
+                
+                function initialState() {
+                  colors =  ["red", "green", "yellow", "orange", "white", "blue"]  
+                  return {
+                    colors: colors,
+                    colorsDefaultOrValue: colors.reduce((a,b)=> (a[b]='DEFAULT',a),{}),
+                    clickColor: colors.reduce((a,b)=> (a[b]=0,a),{})
+                  }
+                }
+                
+                function addVueButtons(id) {
+                   buttons = new Vue({
+                    el: id,
+                    data() {
+                      return initialState()
+                    },
+                    methods : {
+                      close () {
+                        this.$destroy();
+                        this.$el.parentNode.removeChild(this.$el);
+                      },
+                      reset: function() {
+                        Object.assign(this.$data, initialState());
+                        this.$forceUpdate();
+                      },
+                      send(color) {
+                        vueContext = this;
+                        canvas.addEventListener("click", function(e) {
+                          vueContext.clickColor[color]++;
+                          if (vueContext.clickColor[color] < 2) {
+                            var rect = canvas.getBoundingClientRect();
+                            var x = e.clientX - rect.left;
+                            var y = e.clientY - rect.top;
+                            
+                            var pixelData = ctx.getImageData(x, y, 1, 1).data;
+                            document.getElementById('color').style.backgroundColor = rgb2hex(...(pixelData.slice(0, -1)))
+                            
+                            vueContext.colorsDefaultOrValue[color] = rgb2hex(...(pixelData.slice(0, -1)))
+                            // let's send the original image (to encode back to opencv np array nigga)
+                            // and also the new rgb value for color x
+                            console.log(resp)
+                            $.ajax({
+                              url: "change",
+                              data: JSON.stringify({'image': resp.imageRaw, 'colorName': color, 'value': pixelData.slice(0, -1)}),
+                              type: 'post',
+                              cache: false,
+                              processData: false,
+                              contentType: "application/json",
+                              success: function(resp) {
+                                resp = JSON.parse(resp)
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                displayImage(resp.image)
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                response = resp;
+                                  // remove the element from the DOM
+
+                                  //vueContext.reset();
+                                  // Object.keys(vueContext.clickColor).forEach((item, i) => {
+                                  //   vueContext.clickColor[item] = 0;
+                                  // });
+                                  // console.log("nooooo")
+                                  // console.log(vueContext.clickColor);
+                                  // Object.keys(vueContext.colorsDefaultOrValue).forEach((item, i) => {
+                                  //   vueContext.colorsDefaultOrValue[item] = 'DEFAULT2';
+                                  // });
+                                  // $("canvas").off()
+                                  // $("fixed").off()
+                                
+                                
+                              }
+                            });  
+                          }  canvas.removeEventListener('click',arguments.callee,false);  
+                  
+                        }, false);
+                      }
+                    }
+                  })
+                }
+              
+                  
+                addVueButtons("#buttons"+noCounter)
+                
+                
+                // $("#buttons"+noCounter).css('display', '');
+                $("#placeholder").css('grid-area', "buttons");
+                $("#yes").css('display', 'none');
+                $("#no").css('display', 'none');
+                document.getElementsByClassName("grid")[0].style.gridTemplateAreas = '"cool cool cool cool cool" "progress imageDivWait imageDivWait buttons buttons" "progress imageDivWait imageDivWait buttons buttons"'
+                
+                $("#fixed").click(function(){
+                  storeColors.push(response.colors_matrix);
+                  fullColors()
+                  console.log(storeColors);
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  middle_color = response.colors_matrix[1][1];
+                  progress.sides[middle_color] = true;
+                  //$("#buttons").css('display', "none");
+                  document.getElementsByClassName("grid")[0].style.gridTemplateAreas = '"cool cool cool cool cool" "progress imageDivWait imageDivWait uploadDiv uploadDiv" "progress imageDivWait imageDivWait uploadDiv uploadDiv"'
+                  $(".uploadDiv").css('display', "");
+                  vueContext.close();
+                  $("#fixed").remove();
+                });
+          
+              });
+            }
+          });
+        } main();
+      });
+
+    });
+    
+  
+    
+    
+  </script>
+</head>
+<body style="overflow: hidden; display:flex;">
+  
+  <nav class="navbarx">
+    <ul class="navbar-list">
+      <li class="logo">
+        <a href="#" class="navbar-link">
+          <img src="https://img.icons8.com/color/48/000000/rubiks-cube.png"/>
+          <span class="navbar-text"> שחר יצחק</span>
+        </a>
+      </li>
+      <li class="navbar-listitem">
+        <a href="#" class="navbar-link">
+          <!-- instructions -->
+          <img src="https://img.icons8.com/nolan/64/question-mark.png"/>
+          <span class="navbar-text">Instructions</span>
+        </a>
+      </li>
+      <li class="navbar-listitem">
+        <a href="#" class="navbar-link">
+          <!-- trigo -->
+          <img src="https://img.icons8.com/nolan/64/trigonometry.png"/> 
+          <span class="navbar-text">Explanation</span>
+        </a>
+      </li>
+      <li class="navbar-listitem">
+        <a href="#" class="navbar-link">
+          <!-- code -->
+          <img src="https://img.icons8.com/nolan/64/code-file.png"/>
+          <span class="navbar-text">Code</span>
+        </a>
+      </li>
+      <li class="navbar-listitem">
+        <a href="#" class="navbar-link">
+          <!-- gmail -->
+          <img src="https://img.icons8.com/nolan/64/gmail.png"/>
+          <span class="navbar-text">Contact</span>
+        </a>
+      </li>
+  
+    </ul>
+  </nav>
+  
+  
+  <div class="gridParent">
+    <div class="grid">
+      <div class="rgb-wrapper">
+        <p class="text">Rubik's cube</p>
+        <div class="gradient"></div>
+      </div>
+      <div class="imageDivWait">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="uploadDiv">
+        
+        
+        <div class="center">
+          <div class="title">
+            <h2>upload the skadoodle bruh for God's sake</h2>
+          </div>
+          
+      		  <img class="uploadIcon" src="https://img.icons8.com/nolan/64/upload.png"/>
+			      <input type="file" id="multiFiles" name="files[]" multiple="multiple"/>
+		      
+          <button id="upload" class="btn">Upload</button>
+        </div>
+        
+      </div>
+      <!-- <div class="yesnoDiv">yesno</div> -->
+      
+       
+        
+    <div class="progress">
+      <table class="table table-responsive table-image w-100 h-100">
+      <thead>
+        <tr>
+          <th scope="col">Color</th>
+          <th scope="col">State</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in colors">
+          <td>
+            <div v-bind:style= "'backgroundColor:' + item +'; width: 50px; height: 50px;'">
+            </div>
+          </td>
+          <td class="w-25">
+            <!-- <img v-bind:class="{ spin: sides[item] }" :src="sides[item] ? urls.check : urls.loading"/> -->
+            <img v-bind:src="sides[item] ? urls[0].check : urls[0].loader" v-bind:class="sides[item] ? 'nothing' : 'rotateClass'">
+          </td>
+        </tr>
+      </tbody>
+    </table>   
+      
+    </div>
+    
+    <div id="placeholder"> </div>
+    </div>
+    
+
+    
+  </div>
+  
+
+  
+<!-- 
+    <div id="buttons">
+      <button class="btn btn-primary" v-for="(item, index) in colors" v-on:click="send(item)" v-bind:style="{ backgroundColor: item}">
+        click
+      </button>
+    </div> -->
+    
+    <div style="height:100px; width:100px;" id="color"> </div>
+    
+    
+    
+
+  
+  
+  <div class="back"></div>
+
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+.spin {
+  animation: spin 4s linear infinite; }
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg); } }
+
+.uploadDiv {
+  background: linear-gradient(to top right, darkmagenta 0%, hotpink 100%);
+  border-radius: 5px; }
+
+.progress {
+  grid-area: progress;
+  width: 100%;
+  height: 100%; }
+
+.table-responsive {
+  overflow-x: hidden;
+  overflow-y: auto; }
+
+.center {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 260px;
+  border-radius: 3px;
+  box-shadow: 8px 10px 15px 0 rgba(0, 0, 0, 0.2);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column; }
+
+.title {
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid #999;
+  text-align: center; }
+
+#multiFiles {
+  margin-left: 65px; }
+
+#upload {
+  background: darkmagenta;
+  color: white; }
+
+#upload:hover {
+  background: rebeccapurple; }
+
+h2 {
+  font-size: 16px;
+  font-weight: 300;
+  color: #666; }
+
+.back {
+  position: absolute;
+  margin: 0 auto;
+  background: url("https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/NfP5GLcDl/videoblocks-food-minimalism-color-still-life-and-natural-concept-ripe-coconuts-and-half-coconut-on-white-background-2k-high-quality-full-hd-1920_rqurrqprl_thumbnail-full01.png"), linear-gradient(233deg, #e56420, #c22525, #3d9c31, #37bbde);
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: hard-light;
+  animation: hue-rotate 2s linear infinite;
+  width: 100%;
+  height: 100%;
+  z-index: -5; }
+
+@keyframes hue-rotate {
+  from {
+    filter: hue-rotate(0); }
+  to {
+    filter: hue-rotate(360deg); } }
+
+.text {
+  color: #ffffff;
+  background: #000000;
+  font-size: 150px;
+  font-family: Arial;
+  text-transform: uppercase;
+  width: 100%;
+  height: 100%; }
+
+.text::before {
+  content: "Rubik's cube";
+  position: absolute;
+  mix-blend-mode: difference;
+  filter: blur(2px); }
+
+.gradient {
+  background: linear-gradient(45deg, #F17C58, #E94584, #24AADB, #27DBB1, #FFDC18, #FF3706);
+  background-size: 600% 100%;
+  animation: scroll 10s linear infinite;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: multiply; }
+
+.gridParent {
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  height: 100vh;
+  display: flex;
+  justify-content: center; }
+
+.rotateClass {
+  animation: rotation 2s infinite linear; }
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(359deg); } }
+
+.grid {
+  height: 50vh;
+  width: 50vw;
+  align-self: center;
+  margin-bottom: 7.5vh;
+  display: grid;
+  gap: 1rem;
+  grid-template-areas: 'cool cool cool cool cool' 'progress imageDivWait imageDivWait uploadDiv uploadDiv' 'progress imageDivWait imageDivWait uploadDiv uploadDiv';
+  grid-template-rows: repeat(3, 33.3%);
+  grid-template-columns: repeat(5, 20%); }
+
+.imageDivWait {
+  grid-area: imageDivWait;
+  background: linear-gradient(45deg, #F17C58, #E94584, #24AADB, #27DBB1, #FFDC18, #FF3706);
+  background-size: 600% 100%;
+  animation: scroll 10s linear infinite; }
+
+.uploadDiv {
+  grid-area: uploadDiv; }
+
+.yesnoDiv {
+  grid-area: yesnoDiv; }
+
+.instruction1 {
+  grid-area: instruction1; }
+
+.instruction2 {
+  grid-area: instruction2; }
+
+.instruction3 {
+  grid-area: instruction3; }
+
+.rgb-wrapper {
+  text-align: center;
+  filter: brightness(500%);
+  grid-area: cool;
+  background-color: green; }
+
+@keyframes scroll {
+  0% {
+    background-position: 0%; }
+  100% {
+    background-position: 100%; } }
+
+#canvas {
+  width: 100%;
+  height: 100%;
+  border-style: solid; }
+
+/*# sourceMappingURL=grid.scss.css.map */
