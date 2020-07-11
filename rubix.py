@@ -173,24 +173,26 @@ def main(code=None):
     #matrix_color_placeholder = [[ 0 for x in range(4)] for y in range(3)]
 
     #URL = "http://127.0.0.1:5000/useCode" # for now local host
+    
+    
     URL = "https://rubix-isaac.herokuapp.com/useCode" # now heroku
     
-    print(code)
-    #code = 'bioq'
-    data = requests.post(url=URL, json={'code':code}).json()["stringColor"]
-    print(data)
-    
-    #data = list("wwwwwwwwwrrrrrrrrrgggggggggbbbbbbbbbyyyyyyyyyooooooooo")
-    data = np.array(list(data)).reshape((int(len(data)/9), 3, 3))
-    
-    for y in range(len(matrix_color_indicator)):
-        for x in range(len(matrix_color_indicator[y])):
-            for matrixdata in data:
-                if matrix_color_indicator[y][x] == matrixdata[1][1]:
-                    matrix1[y][x] = matrixdata
-                    
+    # print(code)
+    # #code = 'bioq'
+    # data = requests.post(url=URL, json={'code':code}).json()["stringColor"]
+    # print(data)
+    # 
+    # #data = list("wwwwwwwwwrrrrrrrrrgggggggggbbbbbbbbbyyyyyyyyyooooooooo")
+    # data = np.array(list(data)).reshape((int(len(data)/9), 3, 3))
+    # 
+    # for y in range(len(matrix_color_indicator)):
+    #     for x in range(len(matrix_color_indicator[y])):
+    #         for matrixdata in data:
+    #             if matrix_color_indicator[y][x] == matrixdata[1][1]:
+    #                 matrix1[y][x] = matrixdata
+    # 
             
-    #startCubeSolved()
+    startCubeSolved()
 
     mat1 = [
     ["r", "g", "b"],
@@ -486,7 +488,7 @@ def main(code=None):
                         keeperArrows = keeperArrows + 1
                         # maybe left is faster, check 
                     
-                
+                    
                     ##################################################################
                 else:
                     print("special already solved just need to rotate potentially")
@@ -596,6 +598,7 @@ def main(code=None):
     
     
     def solveWhiteCorners(matrix):
+        
 
         top_corners = [
             [[0, 1, 2, 0], [1, 1, 0, 0], [1, 0, 0, 2]],
@@ -605,7 +608,7 @@ def main(code=None):
         ]
         
         
-        matrix = yellowOnTop(matrix)
+        #matrix = yellowOnTop(matrix)
         
         
         
@@ -613,8 +616,8 @@ def main(code=None):
         bottom_corners = [
             [[2, 1, 0, 0], [1, 1, 2, 0], [1, 0, 2, 2]], # good
             [[2, 1, 0, 2], [1, 1, 2, 2], [1, 2, 2, 0]], # good
-            [[2, 1, 2, 0], [1, 0, 2, 0], [1, 3, 2, 2]], # good
-            [[2, 1, 2, 2], [1, 2, 2, 2], [1, 3, 2, 0]] # good
+            [[2, 1, 2, 2], [1, 2, 2, 2], [1, 3, 2, 0]], # good
+            [[2, 1, 2, 0], [1, 0, 2, 0], [1, 3, 2, 2]] # good
         ]
     
     
@@ -644,11 +647,8 @@ def main(code=None):
                 sides = cornerObjects[i]["sidesIndexes"]
                 colors = cornerObjects[i]["colors"]
                 while True:
-                    print(sides)
                     print("counter"+str(counterRotateTopBottom))
                     if (matrix[1][sides[0]][1][1] == colors[0] or matrix[1][sides[0]][1][1] == colors[1]) and (matrix[1][sides[1]][1][1] == colors[0] or matrix[1][sides[1]][1][1] == colors[1]):
-                            print("solved lel")
-                            print(colors)
                             break
                     else:
                         # rotate top
@@ -659,32 +659,78 @@ def main(code=None):
         
                         sides = cornerObjects[(i+counterRotateTopBottom)%4]["sidesIndexes"]
                         # this was 3 instead of 4 which caused a huge problem
-                        print("nigga I did something indeed")
-        
-        
-                break
                         
                         
                 #after the loop we want to switchFront until the color is in the front so the corner is in the right
-                while True:
-                    if 3 in sides and 0 in sides:
-                        if matrix[1][1][1][1] == colors[1]:
-                            break 
-                        else:
-                            matrix = switchFront(matrix, right=True)
-                            keeperArrows = keeperArrows + 1
-                    else:
-                        if matrix[1][1][1][1] == colors[0]:
-                            break 
-                        else:
-                            matrix = switchFront(matrix, right=True)
-                            keeperArrows = keeperArrows + 1
                 
+                print("sides")
+                print(sides)
+                print("sides")
+                print("colors")
+                print(colors)
+                print("colors")
+                
+                if sides == [0, 3]:
+                    sides = sides[::-1]
+                
+                colors = [matrix[1][sides[i]][1][1] for i in range(len(sides))]
+                
+                print("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
+                
+                print("sides")
+                print(sides)
+                print("sides")
+                print("colors")
+                print(colors)
+                print("colors")
+                
+                global keeperArrows
+                while True:
+                    if matrix[1][1][1][1] == colors[0]:
+                        break
+                    # the correct will be in the right
+                    print("I had to... Is there a problem???")
+                    matrix = switchFront(matrix)
+                    keeperArrows = keeperArrows - 1
+                    
+                    
+                # print("didi")
+                # print(isCornerSolved(matrix, bottom_corners[1]))
+                while True:
+                    if isCornerSolved(matrix, bottom_corners[1]) == True:
+                        break
+                    # if the corresponding corner in the bottom is not solved we want to repeat the algo until it is
+                    # the algo is the sexy move
+                    # 1. switchFront to left 
+                    # 2. rotate clockwise (switch)
+                    # 3. rotate top clockwise
+                    # 4. rotate counterclockwise (switch)
+                    # 5. rotate top counterclockwise
+                    # 6. switchFront to right (reset)
+                    matrix = switchFront(matrix, right=False)
+                    keeperArrows = keeperArrows + 1
+                    matrix = switch(matrix, counter=False)
+                    matrix = rotateTopBottom(matrix, top=True, counter=False)
+                    matrix = switch(matrix, counter=True)
+                    matrix = rotateTopBottom(matrix, top=True, counter=True)
+                    matrix = switchFront(matrix, right=True)
+                    keeperArrows = keeperArrows - 1
+                    
+                break
                     
         print(cornerObjects)
     
         return matrix
     
+
+
+    def isCornerSolved(matrix, corner):
+        isSolved = True
+        for i in range(3):
+            if matrix[corner[i][0]][corner[i][1]][1][1] != matrix[corner[i][0]][corner[i][1]][corner[i][2]][corner[i][3]]:
+                isSolved = False
+        return isSolved
+
 
     def buttonsFunc():
         global buttons
@@ -931,7 +977,12 @@ def main(code=None):
             
             prevAngleX = angleX
             prevAngleY = angleY
-                
+            
+            
+            
+            
+            
+            
             pygame.draw.polygon(DISPLAY, pygame.Color(colors[side[dicti["index"]%9%3][dicti["index"]%9//3]]), pointlist)
             
             for i in range(len(pointlist)):
@@ -1040,16 +1091,16 @@ def main(code=None):
                 sys.exit()
         pygame.display.update()
 
-master = tk.Tk()
-tk.Label(master, text="Enter your code  ").grid(row=0)
-code = tk.Entry(master)
-code.grid(row=0, column=1)
-tk.Button(master, 
-          text='Done', 
-          command=master.quit).grid(row=3, 
-                                    column=0, 
-                                    sticky=tk.W, 
-                                    pady=4)
-master.mainloop()
-main(code=code.get())
-#main()
+# master = tk.Tk()
+# tk.Label(master, text="Enter your code  ").grid(row=0)
+# code = tk.Entry(master)
+# code.grid(row=0, column=1)
+# tk.Button(master, 
+#           text='Done', 
+#           command=master.quit).grid(row=3, 
+#                                     column=0, 
+#                                     sticky=tk.W, 
+#                                     pady=4)
+# master.mainloop()
+# main(code=code.get())
+main()
