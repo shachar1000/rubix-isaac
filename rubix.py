@@ -598,20 +598,14 @@ def main(code=None):
     
     
     def solveWhiteCorners(matrix):
-        
-
         top_corners = [
             [[0, 1, 2, 0], [1, 1, 0, 0], [1, 0, 0, 2]],
             [[0, 1, 2, 2], [1, 1, 0, 2], [1, 2, 0, 0]],
             [[0, 1, 0, 2], [1, 2, 0, 2], [1, 3, 0, 0]],
             [[0, 1, 0, 0], [1, 0, 0, 0], [1, 3, 0, 2]]
         ]
-        
-        
         #matrix = yellowOnTop(matrix)
-        
-        
-        
+
         # bottom corners
         bottom_corners = [
             [[2, 1, 0, 0], [1, 1, 2, 0], [1, 0, 2, 2]], # good
@@ -783,8 +777,6 @@ def main(code=None):
             }
             self.coor = self.coor.dot(rotationMat[axis])
             return self
-
-
     angle = 0
 
     prevAngleX = 0

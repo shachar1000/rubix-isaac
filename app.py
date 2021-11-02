@@ -68,23 +68,14 @@ def upload():
                 # I can also try to do cvtColor with RGB2BGR (slower?)
                 # cv2.imshow("frame", open_cv_image)
                 # cv2.waitKey(0)
-                
                 cv2.imwrite('01.jpeg',open_cv_image_raw)
-                
                 response = detect(open_cv_image_raw)
-                
                 open_cv_image = response["image"]
-                
                 imencoded = cv2.imencode(".jpg", open_cv_image)[1]
-
-                jpg_as_text_detected = base64.b64encode(imencoded)
-                
+                jpg_as_text_detected = base64.b64encode(imencoded)  
                 #now we have to convert opencv to jpg base 64 for the raw image as well
-                
                 imencoded = cv2.imencode(".jpg", open_cv_image_raw)[1]
-                
                 jpg_as_text_raw = base64.b64encode(imencoded)
-                
                 #"imageRaw": jpg_as_text_raw.decode('utf-8')
                 return Response(json.dumps({"imageDetected": jpg_as_text_detected.decode('utf-8'), "colors_matrix": response["colors_matrix"]}))
     return "ok"

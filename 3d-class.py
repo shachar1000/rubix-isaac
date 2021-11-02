@@ -17,8 +17,8 @@ class point:
         
     def convert(self, field, dist):
         coefficient = field / (dist + self.coor[2]) # z
-        self.coor[0] = self.coor[0] * coefficient + 1400 / 2 # x , 400 is width
-        self.coor[1] = -self.coor[1] * coefficient + 1000 / 2 # y, 400 is height
+        self.coor[0] = self.coor[0] * coefficient + 700 / 2 # x , 400 is width
+        self.coor[1] = -self.coor[1] * coefficient + 500 / 2 # y, 400 is height
         return self
         
     def rotate(self, axis, angle): # angle in nigga deg not rad arg
@@ -109,7 +109,7 @@ class texturedCube():
          
          M = cv2.getPerspectiveTransform(np.float32([[0, 0], [width, 0], [0, height], [width, height]]), 
              np.float32(correct_pointlist))
-         image_affine_applied = cv2.warpPerspective(image,M,(1400,1000))
+         image_affine_applied = cv2.warpPerspective(image,M,(700,500))
          
          ######################################################################################################
          
@@ -297,7 +297,7 @@ if __name__ == "__main__":
     prev_time = time.time()
     target_fps = 30
     
-    DISPLAY = pygame.display.set_mode((1400, 1000))
+    DISPLAY = pygame.display.set_mode((700, 500))
     #clock = pygame.time.Clock()
     
     myCube = texturedCube()
