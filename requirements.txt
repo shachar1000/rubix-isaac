@@ -23,7 +23,7 @@ libsass == 0.19.4
 # C:\Users\limor\Desktop\rubix-isaac\app.py: 4
 # C:\Users\limor\Desktop\rubix-isaac\reddit.py: 2
 # C:\Users\limor\Desktop\rubix-isaac\rubix.py: 9
-numpy == 1.17.4
+numpy == 1.22.0
 
 # C:\Users\limor\Desktop\rubix-isaac\app.py: 2
 # C:\Users\limor\Desktop\rubix-isaac\reddit.py: 1
