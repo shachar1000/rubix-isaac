@@ -11,7 +11,7 @@ Flask_SQLAlchemy == 2.4.1
 Pillow == 6.2.1
 
 # C:\Users\limor\Desktop\rubix-isaac\flask_libass.py: 5
-Werkzeug == 0.16.0
+Werkzeug == 2.2.3
 
 # C:\Users\limor\Desktop\rubix-isaac\reddit.py: 3
 imutils == 0.5.3
