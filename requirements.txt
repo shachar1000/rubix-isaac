@@ -2,7 +2,7 @@
 
 # C:\Users\limor\Desktop\rubix-isaac\app.py: 1
 # C:\Users\limor\Desktop\rubix-isaac\flask_libass.py: 7,8
-Flask == 1.1.1
+Flask == 2.3.2
 
 # C:\Users\limor\Desktop\rubix-isaac\app.py: 12
 Flask_SQLAlchemy == 2.4.1
